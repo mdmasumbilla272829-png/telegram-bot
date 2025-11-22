@@ -2,6 +2,12 @@ import telebot
 import json
 import os
 from datetime import datetime
+from admin_panel import (
+    show_admin_panel, show_user_stats, show_total_balance, 
+    send_notification_prompt, broadcast_notification,
+    search_user_prompt, select_balance_type, get_balance_amount,
+    show_delete_notifications_menu, delete_by_date_range_prompt, delete_all_notifications_prompt
+)
 
 # Bot API Token
 API_TOKEN = "8024197741:AAGmDSi41XljyEmB2DcnauNtRU0lTBiXStg"
@@ -85,20 +91,74 @@ def send_welcome(message):
     # Save user to database
     add_user(user.id, user.username, user.first_name, user.last_name)
     
-    # Create welcome message with simple text
-    welcome_text = """
-╔═══════════════════════════════════════════╗
-║  ✨ 🎉 WELCOME TO PROFILE BOT 🎉 ✨   ║
-╚═══════════════════════════════════════════╝
-
-👇 Click the button to see your profile 👇
+    # Create welcome message with ultra unique design
+    welcome_text = f"""
+╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮
+┃                                                       ┃
+┃     ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    ┃
+┃     ░  ██████╗ ██████╗ ████████╗███████╗██╗  ██╗ ░   ┃
+┃     ░  ██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝╚██╗██╔╝ ░   ┃
+┃     ░  ██████╔╝██║   ██║   ██║   █████╗   ╚███╔╝  ░   ┃
+┃     ░  ██╔══██╗██║   ██║   ██║   ██╔══╝   ██╔██╗  ░   ┃
+┃     ░  ██║  ██║╚██████╔╝   ██║   ███████╗██╔╝ ██╗ ░   ┃
+┃     ░  ╚═╝  ╚═╝ ╚═════╝    ╚═╝   ╚══════╝╚═╝  ╚═╝ ░   ┃
+┃     ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    ┃
+┃                                                       ┃
+┃  ═══════════════════════════════════════════════════  ┃
+┃                                                       ┃
+┃     ✨ ═══ ✨ ═══ ✨ ═══ ✨ ═══ ✨ ═══ ✨              ┃
+┃                                                       ┃
+┃        🎊  W E L C O M E  🎊                        ┃
+┃                                                       ┃
+┃     ✨ ═══ ✨ ═══ ✨ ═══ ✨ ═══ ✨ ═══ ✨              ┃
+┃                                                       ┃
+┃  ═══════════════════════════════════════════════════  ┃
+┃                                                       ┃
+┃     🌟━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━🌟     ┃
+┃                                                       ┃
+┃        👋  Hello, {user.first_name or 'User'}!  👋              ┃
+┃                                                       ┃
+┃     🌟━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━🌟     ┃
+┃                                                       ┃
+┃  ═══════════════════════════════════════════════════  ┃
+┃                                                       ┃
+┃  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ┃
+┃  ▓                                                   ▓  ┃
+┃  ▓  🎯  W H A T   Y O U   C A N   D O  🎯          ▓  ┃
+┃  ▓                                                   ▓  ┃
+┃  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ┃
+┃                                                       ┃
+┃     ▸ 👤  View Your Amazing Profile                  ┃
+┃     ▸ 🔔  Check Latest Notifications                 ┃
+┃     ▸ 💎  Manage Your Balance                        ┃
+┃     ▸ ⚡  Fast & Secure                               ┃
+┃                                                       ┃
+┃  ═══════════════════════════════════════════════════  ┃
+┃                                                       ┃
+┃     💫━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━💫     ┃
+┃                                                       ┃
+┃        🚀  Use Buttons Below to Start!  🚀          ┃
+┃                                                       ┃
+┃     💫━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━💫     ┃
+┃                                                       ┃
+┃  ═══════════════════════════════════════════════════  ┃
+┃                                                       ┃
+┃     ❤️━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━❤️     ┃
+┃                                                       ┃
+┃        Made with 💖  for Amazing People              ┃
+┃                                                       ┃
+┃     ❤️━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━❤️     ┃
+┃                                                       ┃
+╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯
     """
     
-    # Create reply keyboard with buttons
+    # Create reply keyboard with beautiful buttons
     markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     btn1 = telebot.types.KeyboardButton("👤 View Profile")
     btn2 = telebot.types.KeyboardButton("🔔 Notifications")
+    btn3 = telebot.types.KeyboardButton("ℹ️ Help")
     markup.add(btn1, btn2)
+    markup.add(btn3)
     
     bot.send_message(
         message.chat.id,
@@ -114,23 +174,33 @@ def view_profile(message):
     first_name = user.first_name if user.first_name else "Not Set"
     last_name = user.last_name if user.last_name else "Not Set"
     
+    users = load_users()
+    user_data = users.get(str(user.id), {})
+    
+    dollar = user_data.get('dollar', 0.0)
+    dk = user_data.get('dk', 0.0)
+    diamond = user_data.get('diamond', 0.0)
+    coin = user_data.get('coin', 0.0)
+    joined_date = user_data.get('joined', 'N/A')
+    
     profile_text = f"""
 ╔═══════════════════════════════════════════╗
-║   📋 USER PROFILE INFORMATION 📋         ║
+║  📋  YOUR PROFILE  📋                    ║
 ╚═══════════════════════════════════════════╝
 
-👤 Username: @{username}
-📝 First Name: {first_name}
-📝 Last Name: {last_name}
-🆔 User ID: {user.id}
-✅ Account Status: Active
+👤 Personal Information:
+  🆔 Username: @{username}
+  📝 First Name: {first_name}
+  📝 Last Name: {last_name}
+  🔢 User ID: `{user.id}`
+  ✅ Status: 🟢 Active
+  📅 Joined: {joined_date}
 
-💰 BALANCE INFORMATION
-
-💵 Dollar: 0.00 USD
-🇩🇰 DK: 0.00 DK
-💎 Diamond: 0.00 💎
-🪙 Coin: 0.00 🪙
+💰 Your Balance:
+  💵 Dollar:  ${dollar:.2f} USD
+  🇩🇰 DK:     {dk:.2f} DK
+  💎 Diamond: {diamond:.2f} 💎
+  🪙 Coin:    {coin:.2f} 🪙
 
 ✨ Profile loaded successfully! ✨
     """
@@ -145,85 +215,103 @@ def view_profile(message):
 def handle_messages(message):
     # Check for admin password
     if message.text == ADMIN_PASSWORD:
-        show_admin_panel(message)
+        show_admin_panel(message, bot, load_users)
     elif message.text == "📊 User Statistics":
-        show_user_stats(message)
+        show_user_stats(message, bot, load_users)
     elif message.text == "💰 Total Balance":
-        show_total_balance(message)
+        show_total_balance(message, bot, load_users)
     elif message.text == "📢 Send Notification":
-        send_notification_prompt(message)
+        send_notification_prompt(message, bot, load_users, load_notifications, add_notification)
     elif message.text == "🔔 Notifications":
         show_notifications(message)
+    elif message.text == "🔍 Search User":
+        search_user_prompt(message, bot, load_users, save_users, load_notifications, add_notification)
+    elif message.text == "🗑️ Delete Notifications":
+        show_delete_notifications_menu(message, bot, load_notifications, save_notifications)
+    elif message.text == "📅 Delete by Date Range":
+        delete_by_date_range_prompt(message, bot, load_notifications, save_notifications)
+    elif message.text == "🗑️ Delete All Notifications":
+        delete_all_notifications_prompt(message, bot, load_notifications, save_notifications)
+    elif message.text == "🔙 Back to Admin Panel":
+        show_admin_panel(message, bot, load_users)
+    elif message.text and message.text.startswith("➕ Add Balance: "):
+        # Extract user_id from button text
+        user_id = message.text.split(": ")[1]
+        from admin_panel import select_balance_type
+        select_balance_type(message, bot, user_id, "add", load_users, save_users, load_notifications, add_notification)
+    elif message.text and message.text.startswith("➖ Remove Balance: "):
+        # Extract user_id from button text
+        user_id = message.text.split(": ")[1]
+        from admin_panel import select_balance_type
+        select_balance_type(message, bot, user_id, "remove", load_users, save_users, load_notifications, add_notification)
+    elif message.text and ("Add: " in message.text or "Remove: " in message.text):
+        # Handle balance type selection (💵 Dollar Add: user_id, etc.)
+        parts = message.text.split(": ")
+        if len(parts) == 2:
+            balance_part = parts[0]
+            user_id = parts[1]
+            
+            # Extract balance type and action
+            if "💵 Dollar" in balance_part:
+                balance_type = "dollar"
+                action_type = "add" if "Add" in balance_part else "remove"
+            elif "🇩🇰 DK" in balance_part:
+                balance_type = "dk"
+                action_type = "add" if "Add" in balance_part else "remove"
+            elif "💎 Diamond" in balance_part:
+                balance_type = "diamond"
+                action_type = "add" if "Add" in balance_part else "remove"
+            elif "🪙 Coin" in balance_part:
+                balance_type = "coin"
+                action_type = "add" if "Add" in balance_part else "remove"
+            else:
+                balance_type = None
+                action_type = None
+            
+            if balance_type and action_type:
+                from admin_panel import get_balance_amount
+                # Show prompt for amount
+                action_text = "Add" if action_type == "add" else "Remove"
+                balance_emoji = {"dollar": "💵", "dk": "🇩🇰", "diamond": "💎", "coin": "🪙"}[balance_type]
+                balance_name = balance_type.capitalize()
+                
+                text = f"""
+╔═══════════════════════════════════════════╗
+║  {balance_emoji}  {action_text.upper()} {balance_name.upper()}  {balance_emoji}        ║
+╚═══════════════════════════════════════════╝
+
+👤 User ID: {user_id}
+💰 Balance Type: {balance_name}
+
+📝 Step 1: Enter Amount
+  Enter the amount to {action_text.lower()}
+  (Only numbers, e.g., 100 or 50.5)
+
+👇 Type the amount now 👇
+"""
+                msg = bot.send_message(message.chat.id, text, parse_mode="Markdown")
+                bot.register_next_step_handler(
+                    msg,
+                    lambda m: get_balance_amount(m, bot, user_id, action_type, balance_type, load_users, save_users, load_notifications, add_notification)
+                )
+    elif message.text == "ℹ️ Help":
+        show_help(message)
     else:
-        pass
-
-def show_admin_panel(message):
-    admin_text = """
+        error_text = """
 ╔═══════════════════════════════════════════╗
-║     🛡️ ADMIN PANEL 🛡️                   ║
+║  ❌  UNKNOWN COMMAND  ❌                  ║
 ╚═══════════════════════════════════════════╝
 
-Select an option below:
-    """
-    
-    # Create reply keyboard with admin buttons
-    markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-    btn1 = telebot.types.KeyboardButton("📊 User Statistics")
-    btn2 = telebot.types.KeyboardButton("💰 Total Balance")
-    btn3 = telebot.types.KeyboardButton("📢 Send Notification")
-    markup.add(btn1, btn2, btn3)
-    
-    bot.send_message(message.chat.id, admin_text, reply_markup=markup, parse_mode="Markdown")
+❌ Unknown command!
+💡 Please use buttons below or /start
+"""
+        bot.send_message(
+            message.chat.id,
+            error_text,
+            parse_mode="Markdown"
+        )
 
-def show_user_stats(message):
-    users = load_users()
-    
-    # Calculate statistics
-    total_users = len(users)
-    active_users = len([u for u in users.values() if u.get('status') == 'active'])
-    inactive_users = total_users - active_users
-    
-    stats_text = f"""
-╔═══════════════════════════════════════════╗
-║     📊 USER STATISTICS 📊                ║
-╚═══════════════════════════════════════════╝
-
-👥 Total Users: {total_users}
-✅ Active Users: {active_users}
-❌ Inactive Users: {inactive_users}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-✨ Statistics loaded! ✨
-    """
-    
-    bot.send_message(message.chat.id, stats_text, parse_mode="Markdown")
-
-def show_total_balance(message):
-    users = load_users()
-    
-    # Calculate total balance
-    total_dollar = sum(float(u.get('dollar', 0)) for u in users.values())
-    total_dk = sum(float(u.get('dk', 0)) for u in users.values())
-    total_diamond = sum(float(u.get('diamond', 0)) for u in users.values())
-    total_coin = sum(float(u.get('coin', 0)) for u in users.values())
-    
-    balance_text = f"""
-╔═══════════════════════════════════════════╗
-║     💰 TOTAL BALANCE 💰                  ║
-╚═══════════════════════════════════════════╝
-
-💵 Total Dollar: {total_dollar:.2f} USD
-🇩🇰 Total DK: {total_dk:.2f} DK
-💎 Total Diamond: {total_diamond:.2f} 💎
-🪙 Total Coin: {total_coin:.2f} 🪙
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-✨ Balance loaded! ✨
-    """
-    
-    bot.send_message(message.chat.id, balance_text, parse_mode="Markdown")
+# Admin panel functions moved to admin_panel.py
 
 def show_notifications(message):
     notifications = load_notifications()
@@ -231,83 +319,33 @@ def show_notifications(message):
     if notifications:
         notification_text = """
 ╔═══════════════════════════════════════════╗
-║     🔔 NOTIFICATIONS 🔔                  ║
+║  🔔  NOTIFICATIONS  🔔                   ║
 ╚═══════════════════════════════════════════╝
 
-📬 Admin Messages:
+📬 Latest Admin Messages:
 
 """
         for i, notif in enumerate(notifications[-5:], 1):  # Last 5 notifications
-            notification_text += f"{i}. {notif['message']}\n   ({notif['time']})\n\n"
+            notification_text += f"{i}. 📝 {notif['message']}\n   ⏰ {notif['time']}\n\n"
         
-        notification_text += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✨ Stay updated! ✨"
+        notification_text += "✨ Stay updated! ✨"
     else:
         notification_text = """
 ╔═══════════════════════════════════════════╗
-║     🔔 NOTIFICATIONS 🔔                  ║
+║  🔔  NOTIFICATIONS  🔔                   ║
 ╚═══════════════════════════════════════════╝
 
 📬 No notifications yet
 
-Check back later for updates! ✨
+📭 Your notification inbox is empty
+⏳ Check back later for updates!
+
+✨ We'll notify you soon! ✨
 """
     
     bot.send_message(message.chat.id, notification_text, parse_mode="Markdown")
 
-def send_notification_prompt(message):
-    prompt_text = """
-╔═══════════════════════════════════════════╗
-║   📢 SEND NOTIFICATION 📢                ║
-╚═══════════════════════════════════════════╝
-
-Type your notification message:
-(This will be sent to ALL users)
-
-⚠️ Be careful - all users will receive this!
-"""
-    
-    msg = bot.send_message(message.chat.id, prompt_text, parse_mode="Markdown")
-    bot.register_next_step_handler(msg, broadcast_notification)
-
-def broadcast_notification(message):
-    notification_msg = message.text
-    
-    # Add to notifications database
-    add_notification(notification_msg)
-    
-    # Get all users
-    users = load_users()
-    
-    broadcast_text = f"""
-╔═══════════════════════════════════════════╗
-║     📢 ADMIN NOTIFICATION 📢             ║
-╚═══════════════════════════════════════════╝
-
-{notification_msg}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-⏰ Time: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
-"""
-    
-    # Send to all users
-    sent_count = 0
-    for user_id in users.keys():
-        try:
-            bot.send_message(int(user_id), broadcast_text, parse_mode="Markdown")
-            sent_count += 1
-        except:
-            pass
-    
-    # Send confirmation to admin
-    confirmation = f"""
-✅ Notification sent successfully!
-
-Sent to {sent_count} user(s)
-Message: {notification_msg}
-"""
-    
-    bot.send_message(message.chat.id, confirmation)
+# Notification functions moved to admin_panel.py
 
 def search_prompt(message):
     search_text = """
@@ -325,6 +363,29 @@ Type your search query below:
     
     msg = bot.send_message(message.chat.id, search_text, parse_mode="Markdown")
     bot.register_next_step_handler(msg, search_user)
+
+def show_help(message):
+    help_text = """
+╔═══════════════════════════════════════════╗
+║  ℹ️  HELP & GUIDE  ℹ️                     ║
+╚═══════════════════════════════════════════╝
+
+🎯 Available Commands:
+  /start - Start bot & see welcome
+  👤 View Profile - Check profile & balance
+  🔔 Notifications - View admin messages
+
+💡 Tips:
+  • Use buttons for easy navigation
+  • Your profile is automatically saved
+  • Check notifications regularly
+
+🆘 Need Help?
+  Contact admin for any issues or questions
+
+✨ We're here to help! ✨
+"""
+    bot.send_message(message.chat.id, help_text, parse_mode="Markdown")
 
 def search_user(message):
     search_query = message.text.lower()
@@ -365,6 +426,8 @@ Try searching with another term!
 """
     
     bot.send_message(message.chat.id, result_text, parse_mode="Markdown")
+
+# Callback query handler removed - now using reply keyboard buttons
 
 if __name__ == '__main__':
     print("Bot is running...")

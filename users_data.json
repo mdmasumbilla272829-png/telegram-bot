@@ -4,10 +4,32 @@
     "first_name": "Ads short link admin group",
     "last_name": null,
     "status": "active",
-    "dollar": 0.0,
+    "dollar": 0.5,
     "dk": 0.0,
-    "diamond": 0.0,
+    "diamond": 100.0,
     "coin": 0.0,
     "joined": "2025-11-21 14:44:21"
+  },
+  "5567007092": {
+    "username": "masum32123",
+    "first_name": "H MM A TAJ LEADERS \ud83d\udc90",
+    "last_name": null,
+    "status": "active",
+    "dollar": 0.0,
+    "dk": 0.0,
+    "diamond": 100.0,
+    "coin": 0.0,
+    "joined": "2025-11-22 19:13:35"
+  },
+  "5588575277": {
+    "username": "monjur8800",
+    "first_name": "Monjur",
+    "last_name": null,
+    "status": "active",
+    "dollar": 0.0,
+    "dk": 100.0,
+    "diamond": 1000.0,
+    "coin": 0.0,
+    "joined": "2025-11-22 19:53:18"
   }
 }
